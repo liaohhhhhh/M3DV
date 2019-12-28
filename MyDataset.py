@@ -112,7 +112,7 @@ class MyValDataset(Dataset):
 		return len(self.datas)
 
 class MyTestDataset(Dataset):
-	def __init__(self, txt_path= 'test.csv', transform = None, target_transform = None):
+	def __init__(self, datas_dir, txt_path= 'test.csv', transform = None, target_transform = None):
 		
 		fh = open(txt_path,'r')
 		datas = []
@@ -120,7 +120,7 @@ class MyTestDataset(Dataset):
 		for line in fh:
 			line = line.rstrip()
 			words = line.split(',')
-			datas.append(('./test/'+words[0]+'.npz'))
+			datas.append((datas_dir + '/'+words[0]+'.npz'))
 
 		self.datas = datas
 		self.transform = transform
@@ -149,7 +149,7 @@ class MyTestDataset(Dataset):
 	def __len__(self):
 		return len(self.datas)
 
-def Write_Result(result,path):
+def Write_Result(result):
 
 	file = open('test.csv','r')
 	datas = []
@@ -162,10 +162,7 @@ def Write_Result(result,path):
 		datas[i][1] = float(result[i-1])
 	file.close()
 
-	if path != '':
-		file = open(path + '/submission.csv','w')
-	else:
-		file = open('submission.csv','w')
+	file = open('submission.csv','w')
 
 	datas[0][0] = 'Id'
 	datas[0][1] = 'Predicted'

@@ -15,7 +15,11 @@ def freeze_bn(m):
 
 BATCHSIZE = 1
 
-test_datas = MyDataset.MyTestDataset()
+datas_dir = input('--datas_dir:')
+model_dir = input('--model_params_dir:')
+
+
+test_datas = MyDataset.MyTestDataset(datas_dir=datas_dir)
 test_loader = DataLoader(dataset=test_datas,batch_size=BATCHSIZE,shuffle=False)
 
 device = torch.device('cuda')
@@ -26,9 +30,6 @@ minscore = 1
 last = 0
 bestcorrect = 0
 time = 3
-
-model_dir = input('--model_params_dir:')
-outputs_dir = input('--outputs_dir:')
 
 model.load_state_dict(torch.load(model_dir))
 
@@ -44,4 +45,4 @@ for data_test in test_loader:
 	for score in outputs:
 		result.append(score)
 print(result)
-MyDataset.Write_Result(result,outputs_dir) 
+MyDataset.Write_Result(result) 
